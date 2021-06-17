@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Weather</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        // create a request
+        function show(name){
+        var request = new XMLHttpRequest();
+        request.open("GET","https://api.openweathermap.org/data/2.5/weather?q="+name+"&appid=93f26e3c57081a6210de53b8dcfdfea4",true);
+        request.onload =  function(){
+            if( request.status>=200 && request.status<400){
+                var data = JSON.parse(request.responseText);
+                console.log(data);
+                document.getElementById('temp').innerHTML = "temperature at "+name+" is "+data.main.temp;
+                document.getElementById('weather').innerHTML = "clouds status at "+name+" is "+data.weather[0].description;
+                var icon = data.weather[0].icon+".png";
+                document.getElementById('myimg').src = "https://openweathermap.org/img/w/"+icon ;
+            }
+            else {
+                console.log("some error");
+            }
+        };
+        request.onerror = function(){
+            console.log("connection error");
+        };
+       request.send();
+     };
+       
+       
+        // response
+        //parse the response
+        //manage error
+        // send the request
+    </script>
+    <script>
+        function city(){
+            show(document.getElementById('city').value);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+    <h2 id="temp">  Temp here </h2>
+    <h2 id="weather">  Weather here </h2>
+    <img id="myimg" src="img.png" alt="weatherimagehere"/>
+    <select id="city" onchange="city()">
+        <option value=""></option>
+        <option value="hyderabad">Hyderabad</option>
+        <option value="delhi">Delhi</option>
+        <option value="bangalore">Bangalore</option>
+        <option value="mumbai">Mumbai</option>
+        <option value="chennai">Chennai</option>
+        <option value="kolkata">Kolkata</option>
+        <option value="gujarat">Gujarat</option>
+    </select>
+</div>
+</body>
+</html>
